@@ -65,7 +65,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  // lucide-react is deliberately NOT excluded from pre-bundling. Excluded, the dev server hands the browser each
+  // icon as its own file (the package has thousands), which made the first load take minutes.
   optimizeDeps: {
-    exclude: ['lucide-react'],
+    include: ['lucide-react', 'react', 'react-dom', 'chart.js'],
   },
 });

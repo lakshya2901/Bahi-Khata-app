@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Wallet, Users, ReceiptText, Phone, BadgeCheck } from 'lucide-react';
+import { Wallet, Users, ReceiptText, Phone, BadgeCheck, MessageCircle, MessageSquare } from 'lucide-react';
 import { PageHeader, StatCard, Card } from '@/components/Page';
 import { Modal } from '@/components/Modal';
 import { Field, TextInput, EmptyState } from '@/components/Form';
 import { toastSuccess, toastError } from '@/components/Toast';
-import { fetchSales, recordBillPayment, recordCustomerPayment } from '@/lib/api';
+import { fetchSales, recordBillPayment, recordCustomerPayment, useSettings } from '@/lib/api';
+import { reminderMessage, reminderPhone, smsLink, whatsappLink } from '@/lib/reminder';
 import { formatMoney, formatDateTime, PAYMENT_LABELS } from '@/lib/format';
 import type { Sale } from '@/lib/types';
 
@@ -28,6 +29,7 @@ export function PendingPage() {
   const [target, setTarget] = useState<Target | null>(null);
   const [amount, setAmount] = useState('');
   const [saving, setSaving] = useState(false);
+  const { settings } = useSettings();
 
   const load = useCallback(async () => {
     try {
@@ -88,6 +90,18 @@ export function PendingPage() {
     await load();
   };
 
+  // Opens WhatsApp or the SMS app with the message already typed; the owner just presses Send.
+  const reminderFor = (g: Group) => {
+    const phone = reminderPhone(g.phone);
+    if (!phone) return null;
+    const message = reminderMessage({
+      customerName: g.bills.find((b) => b.customer_name)?.customer_name ?? '',
+      shopName: settings?.store_name || 'Mahaveer Agencies',
+      bills: g.bills,
+    });
+    return { whatsapp: whatsappLink(phone, message), sms: smsLink(phone, message) };
+  };
+
   const targetName = target?.kind === 'bill' ? target.sale.bill_number : target?.group.name;
 
   return (
@@ -113,12 +127,33 @@ export function PendingPage() {
       )}
 
       <div className="space-y-4">
-        {groups.map((g) => (
+        {groups.map((g) => {
+          const reminder = reminderFor(g);
+          return (
           <div key={g.key} className="bg-white rounded-xl border border-gray-200 shadow-sm">
             <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between gap-3">
               <div className="min-w-0">
                 <div className="text-sm font-semibold text-gray-900 truncate">{g.name}</div>
                 {g.phone && <div className="text-xs text-gray-500 flex items-center gap-1 mt-0.5"><Phone size={11} /> {g.phone}</div>}
+                {g.phone && !reminder && <div className="text-[11px] text-amber-700 mt-0.5">This phone number looks incomplete, so a reminder cannot be sent.</div>}
+                {reminder && (
+                  <div className="flex items-center gap-2 mt-2">
+                    <a
+                      href={reminder.whatsapp}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-green-600 hover:bg-green-700 text-white"
+                    >
+                      <MessageCircle size={14} /> WhatsApp reminder
+                    </a>
+                    <a
+                      href={reminder.sms}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50"
+                    >
+                      <MessageSquare size={14} /> SMS
+                    </a>
+                  </div>
+                )}
               </div>
               <div className="text-right shrink-0">
                 <div className="text-[11px] text-gray-500">Yet to pay</div>
@@ -162,7 +197,8 @@ export function PendingPage() {
               </div>
             )}
           </div>
-        ))}
+          );
+        })}
       </div>
 
       <Modal open={!!target} onClose={() => setTarget(null)} title={`Receive payment — ${targetName ?? ''}`}>
