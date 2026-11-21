@@ -1,0 +1,467 @@
+# Supplier price list -> product catalogue. Imported by `npm run db:catalogue`. Edit freely, then re-run (safe to repeat).
+# Columns (pipe-separated): category | brand | name | size | mrp | supplier_discount_pct | flat_cost
+# cost price = flat_cost when given, else mrp - discount%.  Stock is NOT in the price list, so it imports as 0.
+Skin Care|Parachute|Parachute Body Lotion Coconut and Honey|250 ml|225|55|
+Grocery|Aashirvad|Aashirvad Pure Cow Ghee|1 L||0|545
+Grocery|Saffola|Saffola Oodles|53 g x 12|264|20|
+Grocery|Hershey's|Hershey's Syrup||95|25|
+Beverages|Tetley|Tetley Vitamin C Ginger Green Tea|25 bags|165|25|
+Beverages|Tata Tea|Tata Tea Gold|750 g|470|30|
+Beverages|Tata Tea|Tata Tea Premium|1.5 kg|705|30|
+Grocery|SugarLite|SugarLite Sugar|500 g|99|30|
+Pain Relief|Zandu|Zandu Balm|25 ml|100|20|
+Pain Relief|Moov|Moov Pain Relief Tube|50 g|189|25|
+Grocery|Saffola|Saffola Oats Classic Masala|500 g|207|20|
+Grocery|Saffola|Saffola Oats Peppy Tomato|500 g|207|20|
+Sanitary Pads|Stayfree|Stayfree Dry Max Purple|42 pcs (28+14)|540|35|
+Sanitary Pads|Stayfree|Stayfree Dry Max Purple|98 pcs (28+28+42)|1200|40|
+Sanitary Pads|Stayfree|Stayfree Secure XL|40 pcs|245|30|
+Sanitary Pads|Whisper|Whisper Ultra XL+ Green|50 pcs|689|35|
+Sanitary Pads|Whisper|Whisper Bindazz Night Black XL|44 pcs|570|35|
+Insect Repellent|Good Knight|Good Knight Gold Refill|45 ml x 4|299|22|
+Insect Repellent|Good Knight|Good Knight Gold Refill|45 ml x 3|237|22|
+Insect Repellent|Good Knight|Good Knight Power Active Refill|45 ml x 6|450|22|
+Insect Repellent|All Out|All Out Refill|45 ml x 6|438|22|
+Insect Repellent|All Out|All Out Machine + 3 Refill|Machine + 3 refill|257|22|
+Air Freshener|Godrej|Godrej Aer Pocket Mix Flavour|10 g x 5|300|22|
+Air Freshener|Godrej|Godrej Aer Pocket Mix Flavour|10 g x 3|180|22|
+Air Freshener|Godrej|Godrej Room Spray Cool Surf Blue|220 ml|169|22|
+Air Freshener|Godrej|Godrej Room Spray Petal Crush Pink|220 ml|169|22|
+Air Freshener|Godrej|Godrej Room Spray Fresh Lush Green|220 ml|169|22|
+Air Freshener|Odonil|Odonil Mix Block Pack of 4|48 g x 4|192|20|
+Insect Repellent|Hit|Hit Crawling Insect Killer Red Spray|700 ml|390|16|
+Insect Repellent|Hit|Hit Crawling Insect Killer Lime Black|700 ml|390|16|
+Insect Repellent|Hit|Hit Crawling Insect Killer Pure Black|700 ml|390|16|
+Soap|Cinthol|Cinthol Lime Soap|100 g x 6|283|20|
+Soap|Lux|Lux Soap Pink|150 g x 8|386|20|
+Soap|Lux|Lux Soap White|150 g x 8|386|20|
+Soap|Pears|Pears Aloevera Soap|125 g x 4|330|22|
+Soap|Pears|Pears Yellow Soap|125 g x 8|680|33|
+Soap|Pears|Pears Yellow Soap|125 g x 5|392|27|
+Soap|Pears|Pears Yellow Soap|125 g x 3|252|22|
+Soap|Pears|Pears Blue Soap|125 g x 4|339|22|
+Soap|Santoor|Santoor Milk Fresh Soap|125 g x 5|209|30|
+Soap|Santoor|Santoor Aloe Fresh Soap|125 g x 5|209|30|
+Soap|Dettol|Dettol Cool Soap|125 g x 5|322|20|
+Soap|Lifebuoy|Lifebuoy Total Soap|125 g x 7|252||203
+Soap|Lux|Lux International Soap|125 g x 4|330|20|
+Soap|Dove|Dove Soap|125 g x 3|280|22|
+Soap|Dove|Dove Soap|125 g x 5|430|25|
+Soap|Dove|Dove Pink Soap|125 g x 3|357|20|
+Soap|Fiama|Fiama Mix Colour Celebration Pack Soap|125 g x 5|364|25|
+Hair Oil|Parachute|Parachute Original Coconut Oil|1 L|415|28|
+Hair Oil|Parachute|Parachute Original Coconut Oil|600 ml|251|20|
+Hair Oil|Bajaj|Bajaj Almond Oil|475 ml|305|22|
+Hair Oil|Bajaj|Bajaj Almond Oil|650 ml|435|32|
+Hair Oil|Navratna|Navratna Cool Oil|500 ml|330|25|
+Hair Oil|Hair & Care|Hair & Care Green|500 ml|263|22|
+Hair Oil|Hair & Care|Hair & Care Green|300 ml|163|22|
+Hair Oil|Hair & Care|Hair & Care Green|300 ml + 100 ml|223|25|
+Hair Oil|Parachute|Parachute Jasmine Oil|500 ml|215|25|
+Hair Oil|Parachute|Parachute Jasmine Oil|300 ml|134|25|
+Hair Oil|Parachute|Parachute Aloevera Oil|400 ml|210|22|
+Hair Oil|Parachute|Parachute Hot Oil|300 ml|175|22|
+Hair Oil|Emami|Emami 7 in 1 Oil|500 ml|305|35|
+Hair Oil|Emami|Emami 7 in 1 Oil|300 ml|195|22|
+Skin Care|Boroplus|Boroplus Antiseptic Cream||170|20|
+Skin Care|Boroplus|Boroplus Body Lotion||375|40|
+Household|Gainda|Gainda Black Phenyl|1 L|125|27|
+Household|Gainda|Gainda Black Phenyl|5 L|525|30|
+Household|Ezee|Ezee Liquid Detergent|1 L bottle + 1 L pouch (2 L)|399||325
+Household|Ezee|Ezee Liquid Detergent|1 L bottle + 2 x 1 L pouch (3 L)|590||472
+Household|Harpic|Harpic Blue|1 L|195||158
+Household|Sani Fresh|Sani Fresh (Odonil free)|500 ml + 500 ml|178|25|
+Household|Lizol|Lizol Refill Green/Red|2 L|375|22|
+Household|Lizol|Lizol Blue/Red|625 ml|131|20|
+Detergent|Rin|Rin Ala|500 ml|89|15|
+Household|Dettol|Dettol Hand Wash Bottle Pink/Green|1500 ml|209|17|
+Household|Vim|Vim Gel|750 ml|199|18|
+Air Freshener|Air Wick|Air Wick Lemon & Orange Refill|250 ml|330|20|
+Air Freshener|Air Wick|Air Wick Summer Delight Refill|250 ml|330|20|
+Air Freshener|Air Wick|Air Wick Lavender Refill|250 ml|330|20|
+Toothpaste|Pepsodent|Pepsodent Original|140 g x 2|140|27|
+Toothpaste|Pepsodent|Pepsodent Protection Gum Care|140 g x 2|188|27|
+Toothpaste|Colgate|Colgate Total Paste|120 g|154|25|
+Toothpaste|Closeup|Closeup|150 g x 2|200|30|
+Toothpaste|Closeup|Closeup|150 g x 4|404|35|
+Toothpaste|Colgate|Colgate Charcoal|120 g|165|25|
+Toothpaste|Colgate|Colgate Original|500 g (200+200+100)|253|25|
+Toothpaste|Colgate|Colgate Active Salt|100 g + 200 g|164|25|
+Toothpaste|Colgate|Colgate Visible White|100 g|145|25|
+Toothpaste|Colgate|Colgate Visible White|100 g x 2|280|30|
+Toothpaste|Colgate|Colgate Max Fresh Blue|150 g|110|25|
+Toothpaste|Colgate|Colgate Max Fresh Red|150 g x 4|448|30|
+Toothpaste|Colgate|Colgate Max Fresh Blue|150 g x 2|200|27|
+Toothpaste|Colgate|Colgate Max Fresh Red|150 g x 2|200|27|
+Toothpaste|Colgate|Colgate Ved Shakti|200 g|114|25|
+Toothpaste|Colgate|Colgate Max Fresh Combo (2 Blue + Plax Mouthwash)|150 g x 2 + 500 ml|505|40|
+Detergent|Tide|Tide|8 kg|870|18|
+Detergent|Ariel|Ariel Front Load Matic Powder 4+2|6 kg|1475|20|
+Detergent|Ariel|Ariel Top Load Matic Powder 4+2|6 kg|1375|20|
+Detergent|Surf Excel|Surf Excel Front Load Matic Powder 4+2|6 kg|1475|20|
+Detergent|Surf Excel|Surf Excel Top Load Matic Powder 4+2|6 kg|1375|20|
+Detergent|Surf Excel|Surf Excel Front Load Liquid Refill|2 L|490|20|
+Detergent|Surf Excel|Surf Excel Top Load Liquid Refill|2 L|430|20|
+Detergent|Surf Excel|Surf Excel Easy Wash|5 kg|770|20|
+Detergent|Vanish|Vanish Powder|400 g|210|18|
+Detergent|Vanish|Vanish Liquid|800 ml|215|18|
+Detergent|Vanish|Vanish Powder|200 g|110|16|
+Detergent|Comfort|Comfort Fabric Conditioner|860 ml|235|15|
+Shaving & Grooming|Gillette|Gillette Shaving Foam||249|25|
+Shaving & Grooming|Gillette|Gillette Venus Razor + Bag Free||299|25|
+Shaving & Grooming|Gillette|Gillette Mach 3 Razor + Foam Free (worth Rs 80)||250|23|
+Shaving & Grooming|Gillette|Gillette Venus Aloe Combo (3 blades + 1 handle + 1 gel spray)||999|50|
+Shaving & Grooming|Gillette|Gillette Shaving Gel|60 g|90|27|
+Shaving & Grooming|Gillette|Gillette Venus Aloe Razor||299|28|
+Shaving & Grooming|Gillette|Gillette Venus Breeze Razor||349|25|
+Shaving & Grooming|Gillette|Gillette Venus Aloe Cartridges|Pack of 2|325|23|
+Shaving & Grooming|Gillette|Gillette Venus Aloe Cartridges|Pack of 4|550|23|
+Shaving & Grooming|Gillette|Gillette Venus Breeze Cartridges|Pack of 2|449|23|
+Shaving & Grooming|Gillette|Gillette Mach 3 Razor||250|25|
+Shaving & Grooming|Gillette|Gillette Mach 3 Turbo Razor||349|25|
+Shaving & Grooming|Gillette|Gillette Vector Cartridges|Pack of 4|130|23|
+Shaving & Grooming|Gillette|Gillette Mach 3 Razor + 2 Cartridges||385|25|
+Shaving & Grooming|Gillette|Gillette Mach 3 Cartridges|Pack of 2|260|23|
+Shaving & Grooming|Gillette|Gillette Mach 3 Cartridges|Pack of 4|449|23|
+Shaving & Grooming|Gillette|Gillette Mach 3 Turbo Cartridges|Pack of 2|349|25|
+Shaving & Grooming|Gillette|Gillette Fusion Cartridges||550|25|
+Hair Care|Streax|Streax Walnut Serum|100 ml|260|28|
+Hair Care|Streax|Streax Blue Serum|45 ml|140|25|
+Hair Care|Streax|Streax Blue Serum|115 ml|320|28|
+Shampoo|Kesh King|Kesh King Shampoo|650 ml|499|45|
+Shampoo|Kesh King|Kesh King Shampoo|300-400 ml|265|30|
+Hair Oil|Kesh King|Kesh King Oil|200 ml|349|30|
+Hair Oil|Indulekha|Indulekha Oil||432|20|
+Shampoo|Indulekha|Indulekha Shampoo||432|20|
+Shaving & Grooming|Park Avenue|Park Avenue Men's Grooming Combo|Pack of 7|625|30|
+Deodorant & Perfume|Park Avenue|Park Avenue Perfume Triumph|100 ml|750|40|
+Deodorant & Perfume|Park Avenue|Park Avenue Perfume Affaire|100 ml|750|40|
+Shampoo|Park Avenue|Park Avenue Beer Shampoo Shiny & Bouncy|650 ml|650|40|
+Deodorant & Perfume|Axe|Axe Dark Temptation Dark Chocolate|215 ml|350|40|
+Deodorant & Perfume|Axe|Axe Gold Temptation Spiced|215 ml|350|40|
+Deodorant & Perfume|Axe|Axe Signature Strong Woody|154 ml|310|40|
+Personal Care|Vwash|Vwash||180|28|
+Skin Care|Dabur|Dabur Gulabari Rose Water Spray|100 ml|85|23|
+Skin Care|Dabur|Dabur Rose Water|400 ml|129|25|
+Skin Care|Himalaya|Himalaya Skin Nourishing Cream|100 ml|150|30|
+Skin Care|Himalaya|Himalaya Neem Tube|300 ml|330|30|
+Skin Care|Himalaya|Himalaya Neem Pump|200 ml|210|30|
+Skin Care|Himalaya|Himalaya Neem Pump|400 ml|425|30|
+Skin Care|Himalaya|Himalaya Neem Tube|150 ml|170|30|
+Shampoo|Himalaya|Himalaya Anti Hair Fall Shampoo|400 ml|230|25|
+Skin Care|Clean & Clear|Clean & Clear Face Wash Original|240 ml|300|45|
+Skin Care|Clean & Clear|Clean & Clear Face Wash Original|150 ml|195|40|
+Skin Care|Clean & Clear|Clean & Clear Face Wash Morning Energy Blue|100 ml|155|35|
+Skin Care|Clean & Clear|Clean & Clear Face Wash Morning Energy Red|100 ml|155|35|
+Skin Care|Clean & Clear|Clean & Clear Face Wash Morning Energy Yellow|100 ml|155|35|
+Shampoo|Dove|Dove Shampoo Daily Shine/Hairfall|1 L|999|50|
+Shampoo|Dove|Dove Shampoo Daily Shine|650 ml|740|42|
+Shampoo|Dove|Dove Shampoo Daily Shine|340 ml|299|28|
+Shampoo|Dove|Dove Shampoo Hairfall|650 ml|695|42|
+Shampoo|Dove|Dove Shampoo Hairfall|340 ml|299|28|
+Hair Care|Dove|Dove Conditioner Hair Fall/Daily Shine/Intense Repair||210|30|
+Personal Care|Dove|Dove Body Wash|800 ml|460|30|
+Shampoo|Head & Shoulders|Head & Shoulders Cool Menthol|380 ml|379|30|
+Shampoo|Head & Shoulders|Head & Shoulders Smooth & Silky|1 L|930|50|
+Shampoo|Head & Shoulders|Head & Shoulders Silky Black/Pink|650 ml|740|45|
+Shampoo|Head & Shoulders|Head & Shoulders Silky Black|180 ml|180|28|
+Shampoo|Head & Shoulders|Head & Shoulders Anti Dandruff|650 ml|740|45|
+Shampoo|Head & Shoulders|Head & Shoulders Menthol Green|1 L|930|50|
+Shampoo|Tresemme|Tresemme Red|1 L|1035|45|
+Shampoo|Tresemme|Tresemme Red|650 ml|670|40|
+Shampoo|Tresemme|Tresemme Black|650 ml|704|40|
+Shampoo|Tresemme|Tresemme Red|180 ml|190|20|
+Shampoo|Tresemme|Tresemme Black Hair Fall|1 L|1035|45|
+Shampoo|Tresemme|Tresemme Black Smooth & Shine|580 ml|610|40|
+Hair Care|Tresemme|Tresemme Conditioner Hair Fall||229|30|
+Shampoo|Pantene|Pantene Hair Fall Shampoo Green|650 ml|645|50|
+Shampoo|Pantene|Pantene Hair Fall Shampoo Pink|650 ml|645|50|
+Shampoo|Pantene|Pantene 2 in 1 Hairfall Shampoo + Conditioner|340 ml|385|30|
+Shampoo|Clinic Plus|Clinic Plus Shampoo|650 ml|525|40|
+Skin Care|Fair & Lovely|Fair & Lovely Cream|110 g|246|20|
+Skin Care|Fair & Lovely|Fair & Lovely BB Cream|40 g|198|20|
+Skin Care|Fair & Lovely|Fair & Lovely Cream + BB Cream|110 g + 40 g|444|22|
+Skin Care|Fair & Lovely|Fair & Lovely Face Wash|100 g|140|25|
+Cosmetics|Sugar Pop|Sugar Pop Kajal|0.30 g|179|28|
+Cosmetics|Sugar Pop|Sugar Pop Compact 01 Sand|9 g|249|28|
+Cosmetics|Sugar Pop|Sugar Pop Compact 02 Beige|9 g|249|28|
+Cosmetics|Sugar Pop|Sugar Pop Primer|25 g|399|28|
+Cosmetics|Sugar Pop|Sugar Pop BB Cream 01 Sand|25 g|249|28|
+Cosmetics|Sugar Pop|Sugar Pop BB Cream 02 Beige|25 g|249|28|
+Skin Care|Vaseline|Vaseline Yellow Body Lotion|600 ml|575|45|
+Skin Care|Vaseline|Vaseline Coco Body Lotion|400 ml|435|40|
+Skin Care|Vaseline|Vaseline Healthy Bright Lotion|400 ml|435|40|
+Skin Care|Vaseline|Vaseline Aloevera Lotion|400 ml|435|40|
+Personal Care|Vega|Vega 3 in 1 Hair (Straightener + Curler + Crimper) - no guarantee/warranty||1999|30|
+Personal Care|Vega|Vega Hair Brush||425|30|
+Shampoo|Sunsilk|Sunsilk Black|360 ml|300|25|
+Shampoo|Sunsilk|Sunsilk Black/Pink|650 ml|645|40|
+Shampoo|Sunsilk|Sunsilk Pink|360 ml|300|25|
+Shampoo|Sunsilk|Sunsilk Yellow|360 ml|300|25|
+Shampoo|Sunsilk|Sunsilk Pink|650 ml|615|40|
+Shampoo|Matrix|Matrix Shampoo (Orange)|200 ml|360|20|
+Shampoo|Matrix|Matrix Shampoo (Orange)|400 ml|560|20|
+Hair Care|Matrix|Matrix Conditioner Orange Tube|Small|260|20|
+Hair Care|Matrix|Matrix Conditioner Orange Tube|Big|530|20|
+Hair Care|Matrix|Matrix Serum Orange||500|20|
+Skin Care|mCaffeine|mCaffeine Coffee Face Wash||349|40|
+Skin Care|mCaffeine|mCaffeine Body Butter||645|40|
+Skin Care|mCaffeine|mCaffeine Lip Scrub||299|40|
+Skin Care|mCaffeine|mCaffeine Coffee Powder Sunscreen SPF 50++++||649|40|
+Skin Care|mCaffeine|mCaffeine Coffee Lip Balm / Choco Lip Balm||299|40|
+Skin Care|mCaffeine|mCaffeine Body Scrub||449|40|
+Skin Care|mCaffeine|mCaffeine Green Tea Face Wash||325|40|
+Skin Care|mCaffeine|mCaffeine Coffee Under Eye Cream||349|40|
+Skin Care|mCaffeine|mCaffeine Coffee Face Scrub||349|40|
+Shampoo|Mamaearth|Mamaearth Onion Shampoo|MRP 349|349|35|
+Shampoo|Mamaearth|Mamaearth Onion Shampoo|MRP 499|499|35|
+Hair Care|Mamaearth|Mamaearth Onion Conditioner||349|35|
+Skin Care|Mamaearth|Mamaearth Ubtan Face Wash|150 g|375|35|
+Skin Care|Mamaearth|Mamaearth Face Wash Vitamin C||259|35|
+Skin Care|Mamaearth|Mamaearth Face Wash Rice Water||259|35|
+Skin Care|Mamaearth|Mamaearth Face Wash Oil Free||259|35|
+Skin Care|Mamaearth|Mamaearth Face Wash Charcoal||259|35|
+Skin Care|Mamaearth|Mamaearth Face Wash Honey Malai||259|35|
+Skin Care|Mamaearth|Mamaearth Face Wash Tea Tree||259|35|
+Skin Care|Mamaearth|Mamaearth Face Wash Aloevera||259|35|
+Skin Care|Mamaearth|Mamaearth Face Wash Coco||259|35|
+Skin Care|Mamaearth|Mamaearth Scrub Ubtan/Charcoal/Vit C||349|35|
+Skin Care|Mamaearth|Mamaearth Vit C Day Cream||249|35|
+Soap|Mamaearth|Mamaearth Ubtan Soap|75 g x 5|375|35|
+Cosmetics|Mamaearth|Mamaearth Foundation 1N/5N (Ivory Glow/Beige Glow)||599|35|
+Skin Care|Mamaearth|Mamaearth Bye Bye Dark Circles Eye Cream||399|35|
+Cosmetics|Mamaearth|Mamaearth Charcoal Black Kajal||299|35|
+Cosmetics|Mamaearth|Mamaearth Charcoal Black Long Stay Kajal||499|35|
+Skin Care|Mamaearth|Mamaearth Aloevera Gel||299|35|
+Hair Oil|Mamaearth|Mamaearth Onion Oil||399|35|
+Skin Care|Mamaearth|Mamaearth Foaming Face Wash Vit C/Tea Tree/Ubtan||399|35|
+Baby Care|Mamaearth|Mamaearth Baby Cream||199|35|
+Baby Care|Mamaearth|Mamaearth Baby Lotion||199|35|
+Baby Care|Mamaearth|Mamaearth Baby Shampoo||199|35|
+Baby Care|Mamaearth|Mamaearth Baby Body Wash||199|35|
+Baby Care|Mamaearth|Mamaearth Baby Roll On||199|35|
+Baby Care|Mamaearth|Mamaearth Baby Talcum Powder||199|35|
+Baby Care|Mamaearth|Mamaearth Baby Hair Oil||249|35|
+Skin Care|Mamaearth|Mamaearth Facial Kit||399|35|
+Deodorant & Perfume|Denver|Denver Deo Green/Blue/Grey|200 ml / 127 g|265|40|
+Deodorant & Perfume|Denver|Denver Perfume + Deo Gift Set Black/White/Green||649|40|
+Deodorant & Perfume|Fogg|Fogg Scent Blue/Brown/Black/Green/Purple/Red||650|50|
+Deodorant & Perfume|Fogg|Fogg Marco Deo Women's/Red/Blue||275|45|
+Deodorant & Perfume|Fogg|Fogg White/Fresh Spicy Deo/Fresh Fougere||275|45|
+Deodorant & Perfume|Engage|Engage Green Deo|150 ml|225|40|
+Deodorant & Perfume|Engage|Engage Orange/Brown Deo|150 ml|225|40|
+Deodorant & Perfume|Engage|Engage Green Deo + Orange/Brown Deo|150 ml + 150 ml|450|42|
+Cosmetics|Faces Canada|Faces Canada Kajal||189|35|
+Cosmetics|Faces Canada|Faces Canada Foundation 02 Natural||199|35|
+Cosmetics|Faces Canada|Faces Canada Foundation 03 Beige||199|35|
+Cosmetics|Colorbar|Colorbar Kajal||170|35|
+Shampoo|L'Oreal|L'Oreal Xtenso Shampoo (Blue/Golden)|200 ml|630|20|
+Hair Care|L'Oreal|L'Oreal Xtenso Mask (Blue/Golden)|196 g|720|20|
+Hair Care|L'Oreal|L'Oreal Xtenso Serum||630|20|
+Skin Care|Emami|Emami Fair & Handsome Cream + Face Wash|60 g + 100 g|354|35|
+Skin Care|Emami|Emami Fair & Handsome Cream|60 g|140|25|
+Skin Care|Emami|Emami Fair & Handsome Cream|100 g|240|30|
+Skin Care|Joy|Joy Sunscreen SPF 20|120 ml|330|30|
+Skin Care|Joy|Joy Sunscreen SPF 40|120 ml|330|30|
+Skin Care|Joy|Joy Sunscreen Lotion||310|30|
+Skin Care|Joy|Joy Charcoal Face Wash|150 ml|210|30|
+Shampoo|Wella|Wella Shampoo||680|20|
+Hair Care|Wella|Wella Conditioner||735|20|
+Hair Care|Wella|Wella Mask||730|20|
+Skin Care|Garnier|Garnier Face Wash Oil Clear/Turbo Bright/Acne|150 g|325|35|
+Skin Care|Garnier|Garnier Face Wash Oil Clear/Turbo Bright/Acne|100 g|225|20|
+Skin Care|Garnier|Garnier Brightening Yellow Colour Face Wash|100 g|210|20|
+Skin Care|Garnier|Garnier Vitamin C Brightening Gel Face Wash|100 g|225|20|
+Cosmetics|Garnier|Garnier BB Cream|18 g|145|20|
+Cosmetics|Garnier|Garnier BB Cream|30 g|249|25|
+Skin Care|Garnier|Garnier Vitamin C Cream||189|20|
+Hair Care|Garnier|Garnier Hair Colour Black/Darkest Brown (1N/3N/3.16/4N)||200|22|
+Hair Care|Garnier|Garnier Hair Colour Small Burgundy (3.16)||89|20|
+Skin Care|Garnier|Garnier Acno Fight Moisturizer||190|22|
+Skin Care|Garnier|Garnier Turbo Bright Moisturizer|40 g|149|20|
+Skin Care|Garnier|Garnier Turbo Bright Moisturizer|20 g|89|20|
+Skin Care|Garnier|Garnier Turbo Bright Moisturizer 40 g + Face Wash 150 g||474|35|
+Skin Care|Garnier|Garnier Neem Face Wash|100 g|179|20|
+Skin Care|Garnier|Garnier Micellar Water|125 ml|225|35|
+Skin Care|Neutrogena|Neutrogena Sunscreen|30 ml|260|20|
+Skin Care|Neutrogena|Neutrogena Oil Free Acne Face Wash|175 ml|675|20|
+Skin Care|Neutrogena|Neutrogena Sunscreen|88 ml|675|20|
+Skin Care|Neutrogena|Neutrogena Deep Clean Black Head Eliminating Scrub|100 ml|370|20|
+Skin Care|Neutrogena|Neutrogena Deep Clean Black Head Eliminating Scrub|50 ml|180|20|
+Skin Care|Neutrogena|Neutrogena Deep Foam Cleanser|50 ml|175|20|
+Skin Care|Everyuth|Everyuth Walnut Scrub (min 12 pcs)|100 g|150|35|
+Hair Care|Biotique|Biotique Hair Colour (1N/3N/4N)||250|35|
+Personal Care|Fiama|Fiama Shower Gel Green/Orange/Purple/Pink|250 ml|225|35|
+Personal Care|Fiama|Fiama Body Wash Purple/Orange|500 ml|449|40|
+Cosmetics|Swiss Beauty|Swiss Beauty Professional Face & Eye Brush Set|Pack of 6|1099|35|
+Skin Care|Olay|Olay Natural White Instant Glowing Skin Cream|40 g|189|25|
+Skin Care|Olay|Olay Day Cream SPF 15|12 g|299|35|
+Skin Care|Olay|Olay Day Cream SPF 15|20 g|399|35|
+Skin Care|Olay|Olay Day Cream Normal|20 g|399|35|
+Skin Care|Olay|Olay Night Cream|20 g|399|35|
+Skin Care|Olay|Olay Day Cream SPF 15|50 g|899|40|
+Skin Care|Olay|Olay Night Cream|50 g|899|40|
+Hair Care|L'Oreal|L'Oreal Paris Total Repair Kit (Shampoo + Conditioner + Serum)|704 ml + 192.5 ml + 40 ml|1173|40|
+Cosmetics|L'Oreal|L'Oreal Love Liberte Mascara Black (Limited Edition)|6.4 ml|899|35|
+Hair Care|L'Oreal|L'Oreal Paris Total Repair Serum|40 ml|175|25|
+Hair Care|L'Oreal|L'Oreal Paris Total Repair Serum|80 ml|299|28|
+Shampoo|L'Oreal|L'Oreal Hyaluronic Shampoo|1 L|1149|30|
+Hair Care|L'Oreal|L'Oreal Hyaluronic Conditioner|192 ml|239|25|
+Shampoo|L'Oreal|L'Oreal Paris Total Repair 5 Shampoo|1 L|930|45|
+Shampoo|L'Oreal|L'Oreal Paris Total Repair 5 Shampoo|180 ml|179|25|
+Shampoo|L'Oreal|L'Oreal Paris Total Repair 5 Shampoo|396 ml|369|25|
+Shampoo|L'Oreal|L'Oreal Paris Total Repair 5 Shampoo|82.5 ml|80|22|
+Hair Care|L'Oreal|L'Oreal Paris Total Repair 5 Conditioner|175 ml|229|35|
+Shampoo|L'Oreal|L'Oreal Paris 6 in 1 Oil Shampoo|396 ml|399|25|
+Hair Care|L'Oreal|L'Oreal Paris 6 in 1 Oil Conditioner|175 ml|239|30|
+Shampoo|L'Oreal|L'Oreal Paris Dream Length Shampoo|396 ml|379|25|
+Hair Care|L'Oreal|L'Oreal Paris Dream Length Conditioner|175 ml|239|30|
+Hair Care|L'Oreal|L'Oreal Black Hair Fall Conditioner|175 ml|239|30|
+Hair Care|L'Oreal|L'Oreal Black Hair Fall Conditioner|396 ml|399|25|
+Shampoo|L'Oreal|L'Oreal Paris Dream Length Shampoo|1 L|959|40|
+Shampoo|L'Oreal|L'Oreal Paris 6 in 1 Oil Shampoo|1 L|899|40|
+Hair Care|L'Oreal|L'Oreal Casting Hair Colour (200/300/316/400/500)||630|25|
+Hair Care|L'Oreal|L'Oreal Excellence Hair Colour (1N/3N/4N/4.25N/3.16N)||650|25|
+Skin Care|L'Oreal|L'Oreal Glycolic Foam|100 ml|329|25|
+Hair Care|Livon|Livon Serum Combo (2 Purple Serum + Vega Hair Comb)|100 ml x 2|1135|45|
+Hair Care|Livon|Livon Serum Combo (2 Damage Protection Serum + Syska Hair Dryer 1000W)|100 ml x 2|1749|50|
+Hair Care|Livon|Livon Serum Purple (Rough & Dry Hair)|100 ml|375|30|
+Hair Care|Livon|Livon Serum Red (Damage Protection)|100 ml|375|30|
+Hair Care|Livon|Livon Serum Red|50 ml|170|30|
+Hair Care|Livon|Livon Serum Red|100 ml (MRP 315)|315|30|
+Personal Care|Veet|Veet Cream Pink|50 g|135|22|
+Personal Care|Veet|Veet Cream Green (Dry Skin)|50 g|135|20|
+Personal Care|Veet|Veet Cream Big Size Green (Sensitive)/Pink (Normal)|100 g|245|30|
+Personal Care|Veet|Veet for Men (Normal Skin)|50 g|128|20|
+Personal Care|Veet|Veet for Men (Dry/Normal Skin)|50 g|125|20|
+Personal Care|Veet|Veet Strips Pink|20 strips|235|20|
+Personal Care|Veet|Veet Strips Green/Blue|20 strips|235|20|
+Skin Care|Lakme|Lakme Peach Milk Cream||110|20|
+Skin Care|Lakme|Lakme Peach Milk Cream|100 g|210|25|
+Skin Care|Lakme|Lakme Peach Milk Cream|200 g|399|28|
+Cosmetics|Lakme|Lakme Face Powder (Warm Pink/Rose)||199|20|
+Cosmetics|Lakme|Lakme Eyeconic Kajal|Pack of 2|350|35|
+Cosmetics|Lakme|Lakme Lip Love|4.5 g|150|30|
+Skin Care|Lakme|Lakme D-Tan Scrub|50 g|155|20|
+Cosmetics|Lakme|Lakme Sun Compact|7 g|285|25|
+Skin Care|Lakme|Lakme Sun Expert Gel Cream||200|25|
+Skin Care|Lakme|Lakme Sunscreen SPF 24|60 ml|225|25|
+Skin Care|Lakme|Lakme Sunscreen SPF 24|100 ml|375|28|
+Skin Care|Lakme|Lakme Sunscreen SPF 30|60 ml|275|25|
+Skin Care|Lakme|Lakme Sunscreen SPF 30|100 ml|449|28|
+Skin Care|Lakme|Lakme Sunscreen SPF 50 Tinted|100 ml|525|28|
+Skin Care|Lakme|Lakme Sunscreen SPF 50|50 ml|325|28|
+Skin Care|Lakme|Lakme Sunscreen SPF 50|100 ml|525|28|
+Skin Care|Lakme|Lakme Sunscreen SPF 50 Gel|50 ml|375|25|
+Skin Care|Lakme|Lakme Sunscreen SPF 50 Gel|100 ml|575|28|
+Cosmetics|Lakme|Lakme Absolute Matte Skin Natural Mousse Golden Medium|25 g|850|35|
+Cosmetics|Lakme|Lakme Eyeconic Curling Mascara||475|35|
+Cosmetics|Lakme|Lakme 9 to 5 Primer + Matte Perfect Cover Foundation Warm Creme W120|25 ml|525|30|
+Cosmetics|Lakme|Lakme Absolute Shine Eye Liner||525|30|
+Cosmetics|Lakme|Lakme Blur Perfect Primer||299|20|
+Cosmetics|Lakme|Lakme 9 to 5 Mousse Foundation Vanilla|6 g|170|20|
+Cosmetics|Lakme|Lakme Compact Powder Shell/Marble/Pearl||170|20|
+Cosmetics|Lakme|Lakme Foundation Shell/Marble||170|20|
+Skin Care|Lakme|Lakme Lumi Cream|30 g|299|20|
+Skin Care|Lakme|Lakme Lumi Cream (larger pack)||549|28|
+Skin Care|Lakme|Lakme Perfect Radiance Cream||349|30|
+Skin Care|Lakme|Lakme Perfect Radiance Serum||599|30|
+Skin Care|Lakme|Lakme Peach Milk Ultra Light Gel|50 g|120|20|
+Skin Care|Lakme|Lakme Peach Milk Ultra Light Gel|100 g|240|25|
+Skin Care|Lakme|Lakme Peach Milk Soft Creme Moisturizer Bottle|200 g|399|28|
+Skin Care|Lakme|Lakme Peach Milk Bottle Moisturizer|120 ml|199|20|
+Skin Care|Lakme|Lakme Peach Milk Bottle Moisturizer|60 ml|99|18|
+Cosmetics|Lakme|Lakme CC Cream (Bronze/Beige/Honey)||360|28|
+Skin Care|Lakme|Lakme Vitamin C Serum|30 ml|599|35|
+Skin Care|Lakme|Lakme Gentle Cleansing Milk|120 ml|270|30|
+Skin Care|Lakme|Lakme Gentle Cleansing Milk|60 ml|140|25|
+Skin Care|Lakme|Lakme Perfect Radiance Face Wash|50 g|175|20|
+Skin Care|Lakme|Lakme Strawberry Face Wash|100 g|240|20|
+Skin Care|Lakme|Lakme Lemon Face Wash|100 g|240|20|
+Skin Care|Lakme|Lakme Kiwi Face Wash|50 g|130|20|
+Skin Care|Nivea|Nivea Milk Body Lotion|400 ml|399|40|
+Skin Care|Nivea|Nivea Body Milk Lotion Combo|400 ml + 100 ml|524|40|
+Skin Care|Nivea|Nivea Body Milk Lotion|600 ml|625|42|
+Skin Care|Nivea|Nivea Milk Body Lotion|100 ml|99|30|
+Skin Care|Nivea|Nivea Oil in Almond Lotion|400 ml|519|40|
+Skin Care|Nivea|Nivea Lip Balm Roll On Cherry/All Flavours||199|40|
+Skin Care|Nivea|Nivea Aloevera Lotion|600 ml|759|45|
+Deodorant & Perfume|Nivea|Nivea Roll On Deep Impact/Pearl Beauty/Whitening/Fresh Natural||199|40|
+Skin Care|Nivea|Nivea Rose Body Lotion (Light Blue Bottle)|400 ml|425|40|
+Skin Care|Nivea|Nivea Rose Gel Lotion|400 ml|479|40|
+Skin Care|Nivea|Nivea Aloevera Gel Body Lotion|400 ml|479|40|
+Skin Care|Nivea|Nivea Aloevera/Rose Gel Body Lotion||299|35|
+Skin Care|Nivea|Nivea Gel Body Lotion Rose/Aloevera|200 ml|299|35|
+Skin Care|Nivea|Nivea Soft|100 ml|195|35|
+Skin Care|Nivea|Nivea Cream Blue|100 ml|199|35|
+Skin Care|Nivea|Nivea Soft|300 ml|465|45|
+Skin Care|Nivea|Nivea Soft|200 ml|329|40|
+Skin Care|Nivea|Nivea Moisturizing Cream Blue|200 ml|399|40|
+Skin Care|Nivea|Nivea Acne|100 g|199|50|
+Skin Care|Nivea|Nivea Rose/Saffron|100 g|185|40|
+Skin Care|Nivea|Nivea Dark Spot Face Wash|100 g|225|40|
+Skin Care|Nivea|Nivea Men Dark Spot Reduction Cream Tube|50 g|199|40|
+Skin Care|Nivea|Nivea Total Charcoal Face Wash|100 g|250|40|
+Skin Care|Nivea|Nivea Dark Spot Cream (Tin)||225|40|
+Skin Care|Nivea|Nivea Oil Clear Face Wash|100 g|235|40|
+Personal Care|Nivea|Nivea Shower Gel Pink|250 ml|199|40|
+Personal Care|Nivea|Nivea Shower Gel Green|250 ml|199|40|
+Personal Care|Nivea|Nivea Shower Gel Purple/Frangipani|250 ml|199|40|
+Skin Care|Ponds|Ponds Body Lotion|275 ml|299|40|
+Skin Care|Ponds|Ponds Body Lotion|600 ml|549|45|
+Skin Care|Ponds|Ponds Bright Beauty Face Wash|100 g|175|25|
+Skin Care|Ponds|Ponds Bright Beauty Face Wash|150 g|230|27|
+Skin Care|Ponds|Ponds Bright Beauty Face Wash|200 g|350|30|
+Skin Care|Ponds|Ponds Bright Beauty Face Wash + Bright Beauty Cream|100 g + 35 g|474|28|
+Skin Care|Ponds|Ponds Charcoal Face Wash|150 g|299|27|
+Skin Care|Ponds|Ponds Charcoal Face Wash|100 g|220|25|
+Skin Care|Ponds|Ponds Charcoal Face Wash|200 g|455|30|
+Skin Care|Ponds|Ponds Pimple Clearing Face Wash|100 g|295|22|
+Skin Care|Ponds|Ponds Age Miracle Cream||549|25|
+Skin Care|Ponds|Ponds Charcoal Face Wash + Bright Beauty Cream|100 g + 35 g|519|28|
+Cosmetics|Ponds|Ponds BB Cream|MRP 160|160|22|
+Cosmetics|Ponds|Ponds BB Cream|MRP 275|275|25|
+Skin Care|Ponds|Ponds Gold Face Wash|50 g|115|20|
+Personal Care|Ponds|Ponds Powder Purple|400 g|370|25|
+Skin Care|Ponds|Ponds Moisturizer Cream|200 g|360|30|
+Skin Care|Ponds|Ponds Moisturizer Cream|100 g|180|25|
+Skin Care|Ponds|Ponds Charcoal Face Wash|15 g|30|15|
+Skin Care|Ponds|Ponds Bright Beauty|35 g|155|20|
+Skin Care|Ponds|Ponds Bright Beauty|50 g|259|25|
+Skin Care|Ponds|Ponds Superlight Gel|50 g|100|20|
+Skin Care|Ponds|Ponds Superlight Gel|100 g|200|25|
+Skin Care|Ponds|Ponds Superlight Gel|200 g|440|28|
+Skin Care|Ponds|Ponds Superlight Face Serum|20 ml|249|25|
+Skin Care|Ponds|Ponds Bright Beauty Foaming Face Wash|150 ml|399|30|
+Skin Care|Ponds|Ponds Charcoal Detox Foaming Face Wash|150 ml|449|30|
+Skin Care|Lotus|Lotus Sunscreen SPF 20|100 ml|315|30|
+Skin Care|Lotus|Lotus Sunscreen SPF 30|100 ml|395|30|
+Skin Care|Lotus|Lotus Sunscreen SPF 40|100 ml|465|30|
+Skin Care|Lotus|Lotus Sunscreen SPF 50|100 ml|485|30|
+Skin Care|Lotus|Lotus Sunscreen SPF 30|50 ml|275|30|
+Skin Care|Lotus|Lotus Radiant Pearl Facial Kit 4 in 1|Pack of 4|895|30|
+Skin Care|Lotus|Lotus Diamond Facial Kit 4 in 1|Pack of 4|1175|30|
+Skin Care|Lotus|Lotus Gold Facial Kit 4 in 1|Pack of 4|995|30|
+Skin Care|Lotus|Lotus Natural Glow Facial Kit||665|30|
+Skin Care|Lotus|Lotus White Glow Facial Kit||775|30|
+Skin Care|Lotus|Lotus Skin Brightening Cream|60 g|415|32|
+Skin Care|Lotus|Lotus Skin Brightening Cream (Tube)|18 g|99|25|
+Deodorant & Perfume|Yardley|Yardley Gentleman Classic Roll On|50 ml|199|35|
+Deodorant & Perfume|Yardley|Yardley London Rose Roll On|50 ml|199|35|
+Deodorant & Perfume|Yardley|Yardley English Lavender Roll On|50 ml|199|35|
+Deodorant & Perfume|Yardley|Yardley Deo English Lavender|150 ml|225|45|
+Deodorant & Perfume|Yardley|Yardley Deo English Rose|150 ml|225|45|
+Deodorant & Perfume|Yardley|Yardley Deo Morning Dew|150 ml|225|45|
+Deodorant & Perfume|Yardley|Yardley Deo Combo (English Lavender + Morning Dew + English Rose)|450 ml|675|50|
+Cosmetics|Maybelline|Maybelline Baby Lips Cherry/Kiss||175|35|
+Cosmetics|Maybelline|Maybelline Concealer 10 No||499|40|
+Cosmetics|Maybelline|Maybelline Concealer 25 No||499|40|
+Cosmetics|Maybelline|Maybelline Hypercurl Mascara|9.2 ml|499|35|
+Cosmetics|Maybelline|Maybelline Compact 220 (Natural Beige)||629|35|
+Cosmetics|Maybelline|Maybelline Loose Powder Medium 25||799|35|
+Cosmetics|Maybelline|Maybelline Foundation 220/other shades||325|30|
+Cosmetics|Maybelline|Maybelline Colossal Mascara||449|40|
+Cosmetics|Maybelline|Maybelline Colossal Bold Liner||249|35|
+Cosmetics|Maybelline|Maybelline Kajal Yellow|Pack of 2|378|40|
+Baby Care|Himalaya|Himalaya Baby Jar||270|35|
+Baby Care|Himalaya|Himalaya Baby Kit|Pack of 7|550|35|
