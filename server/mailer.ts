@@ -182,17 +182,55 @@ function localNow(tz: string, now: Date) {
  * Called every minute (by the dev server) or every few minutes (by an outside timer hitting the cron address).
  * Sends at most one email a day, once the chosen time has passed, and only while the toggle is on.
  */
-export async function runScheduledEmail(now = new Date()): Promise<{ sent: boolean; reason?: string }> {
+interface Schedule {
+  enabled: boolean; to: string; time: string; tz: string; lastSent: string | null;
+  loadedOn: string;  // the local date this was read, so a new day always re-reads it
+  loadedAt: number;
+}
+let schedule: Schedule | null = null;
+
+/** Forget the remembered schedule (called when the settings are saved, so the change is seen at once). */
+export const invalidateSchedule = () => { schedule = null; };
+
+async function loadSchedule(now: Date): Promise<Schedule> {
   const [s] = await query<{
     email_enabled: boolean; email_to: string; email_time: string; email_tz: string; email_last_sent: string | null;
   }>("SELECT email_enabled, email_to, email_time, email_tz, to_char(email_last_sent, 'YYYY-MM-DD') AS email_last_sent FROM settings WHERE id = 1");
-  if (!s?.email_enabled || !s.email_to) return { sent: false, reason: 'switched off' };
+  const tz = s?.email_tz || 'Asia/Kolkata';
+  schedule = {
+    enabled: Boolean(s?.email_enabled), to: s?.email_to ?? '', time: s?.email_time ?? '20:00', tz,
+    lastSent: s?.email_last_sent ?? null, loadedOn: localNow(tz, now).date, loadedAt: now.getTime(),
+  };
+  return schedule;
+}
+
+/**
+ * Called every minute (by the dev server) or every few minutes (by an outside timer hitting the cron address).
+ * Sends at most one email a day, once the chosen time has passed, and only while the toggle is on.
+ *
+ * The timer must not keep the database awake all day, so the schedule is remembered in memory and the database is
+ * only asked when something could actually be due: the first run, a new day, or once the send time has arrived.
+ */
+export async function runScheduledEmail(now = new Date()): Promise<{ sent: boolean; reason?: string }> {
+  let s = schedule;
+  if (s) {
+    const { date, minutes } = localNow(s.tz, now);
+    const [h, m] = s.time.split(':').map(Number);
+    const stale =
+      date !== s.loadedOn ||                                              // a new day
+      (!s.enabled && now.getTime() - s.loadedAt > 6 * 3600_000) ||        // switched off: look again now and then
+      (s.enabled && s.lastSent !== date && minutes >= h * 60 + m);        // the send time has come
+    if (stale) s = null;
+  }
+  if (!s) s = await loadSchedule(now);
+
+  if (!s.enabled || !s.to) return { sent: false, reason: 'switched off' };
   if (!testTransport && !emailConfigured()) return { sent: false, reason: 'sender Gmail not set up' };
 
-  const { date, minutes } = localNow(s.email_tz, now);
-  const [h, m] = s.email_time.split(':').map(Number);
+  const { date, minutes } = localNow(s.tz, now);
+  const [h, m] = s.time.split(':').map(Number);
   if (minutes < h * 60 + m) return { sent: false, reason: 'not time yet' };
-  if (s.email_last_sent === date) return { sent: false, reason: 'already sent today' };
+  if (s.lastSent === date) return { sent: false, reason: 'already sent today' };
 
   // Claim today's send first, so two copies of the app running at once cannot both send it.
   // A failed attempt is retried after 15 minutes.
@@ -208,6 +246,7 @@ export async function runScheduledEmail(now = new Date()): Promise<{ sent: boole
   try {
     await sendReport();
     await query("UPDATE settings SET email_last_sent = $1::date, email_last_error = '' WHERE id = 1", [date]);
+    if (schedule) schedule.lastSent = date;
     return { sent: true };
   } catch (e) {
     const message = e instanceof Error ? e.message : 'Could not send';

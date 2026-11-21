@@ -1,6 +1,6 @@
 import { timingSafeEqual } from 'node:crypto';
 import { query, ConfigError } from './db';
-import { MailError, emailConfigured, runScheduledEmail, sendReport } from './mailer';
+import { MailError, emailConfigured, invalidateSchedule, runScheduledEmail, sendReport } from './mailer';
 
 export interface ApiRequest {
   method: string;
@@ -192,6 +192,7 @@ async function route(r: ApiRequest): Promise<ApiResponse> {
           b.email_tz !== undefined ? str(b.email_tz) : null,
         ]
       );
+      invalidateSchedule();
       return ok({ ...(rows[0] as any), email_configured: emailConfigured() });
     }
   }

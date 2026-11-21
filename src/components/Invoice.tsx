@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { Printer, Download, RotateCcw, User } from 'lucide-react';
 import { Modal } from '@/components/Modal';
@@ -265,6 +265,34 @@ export function ThermalSlip({ sale, store }: SheetProps) {
   );
 }
 
+/** Shows the invoice at its natural width on a big screen, and scaled down to fit on a phone. */
+function FitWidth({ width, children }: { width: number; children: ReactNode }) {
+  const outer = useRef<HTMLDivElement>(null);
+  const inner = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  const [height, setHeight] = useState<number | undefined>(undefined);
+
+  useLayoutEffect(() => {
+    const o = outer.current, i = inner.current;
+    if (!o || !i) return;
+    const measure = () => {
+      setScale(Math.min(1, o.clientWidth / width));
+      setHeight(i.offsetHeight);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(o);
+    ro.observe(i);
+    return () => ro.disconnect();
+  }, [width]);
+
+  return (
+    <div ref={outer} className="w-full" style={{ height: height !== undefined ? height * scale : undefined }}>
+      <div ref={inner} style={{ width, transform: `scale(${scale})`, transformOrigin: 'top left' }}>{children}</div>
+    </div>
+  );
+}
+
 /** Shows the bill on screen, and prints exactly the invoice (nothing else on the page). */
 export function ReceiptModal({ sale, store, onClose, closeLabel = 'New Bill' }: {
   sale: Sale; store: Settings | null; onClose: () => void; closeLabel?: string;
@@ -288,9 +316,7 @@ export function ReceiptModal({ sale, store, onClose, closeLabel = 'New Bill' }: 
 
   return (
     <Modal open onClose={onClose} title={`Invoice ${sale.bill_number}`} wide={!thermal}>
-      <div className="overflow-x-auto">
-        <div className={thermal ? 'max-w-xs mx-auto' : 'min-w-[640px]'}>{sheet}</div>
-      </div>
+      {thermal ? <div className="max-w-xs mx-auto">{sheet}</div> : <FitWidth width={760}>{sheet}</FitWidth>}
 
       <div className="flex flex-wrap gap-2 mt-4">
         <button onClick={print} className="flex-1 min-w-[7rem] inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">

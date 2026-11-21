@@ -59,13 +59,13 @@ function Segmented<T extends string | number>({ value, onChange, options }: {
   value: T; onChange: (v: T) => void; options: { id: T; label: string }[];
 }) {
   return (
-    <div className="inline-flex rounded-lg border border-gray-300 bg-white p-0.5">
+    <div className="flex sm:inline-flex w-full sm:w-auto rounded-lg border border-gray-300 bg-white p-0.5">
       {options.map((o) => (
         <button
           key={String(o.id)}
           onClick={() => onChange(o.id)}
           aria-pressed={value === o.id}
-          className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${value === o.id ? 'bg-brand-700 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+          className={`flex-1 sm:flex-none px-3 py-2 sm:py-1.5 rounded-md text-xs font-medium transition-colors ${value === o.id ? 'bg-brand-700 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
         >
           {o.label}
         </button>
@@ -200,11 +200,11 @@ export function DashboardPage({ onNavigate }: { onNavigate: (p: PageId) => void 
         title="Dashboard"
         subtitle="Live overview of your store"
         actions={
-          <div className="flex flex-wrap items-center gap-2 justify-end">
+          <div className="flex flex-wrap items-center gap-2 justify-end w-full sm:w-auto">
             <Segmented value={days} onChange={(d) => { setDays(d); setPicked(null); }} options={RANGES.map((r) => ({ id: r.days, label: r.label }))} />
             <button
               onClick={() => onNavigate('pos')}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-700 hover:bg-brand-800 text-white text-sm font-medium transition-colors"
+              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-brand-700 hover:bg-brand-800 text-white text-sm font-medium transition-colors"
             >
               <ShoppingCart size={16} /> New Bill
             </button>

@@ -16,3 +16,23 @@ body {
   background-color: #F8F7F1;
   -webkit-font-smoothing: antialiased;
 }
+
+/* ---- phones and tablets ---- */
+html { -webkit-text-size-adjust: 100%; }
+body { overflow-x: hidden; }
+
+/* No 300 ms tap delay and no grey flash when a button is pressed */
+button, a, select, label, [role='button'] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* iPhones zoom the whole page when a field smaller than 16px is tapped; keep fields at 16px on small screens */
+@media (max-width: 640px) {
+  input, select, textarea { font-size: 16px !important; }
+}
+
+/* Fingers need bigger targets than a mouse: grow the small icon buttons on touch screens */
+@media (pointer: coarse) {
+  button.p-2, button.p-1\.5 { padding: 0.7rem; }
+}

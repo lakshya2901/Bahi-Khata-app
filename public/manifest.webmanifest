@@ -1,0 +1,14 @@
+{
+  "name": "Mahaveer Agencies",
+  "short_name": "Mahaveer",
+  "description": "Inventory & Billing Management",
+  "start_url": "/#/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F8F7F1",
+  "theme_color": "#17497F",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

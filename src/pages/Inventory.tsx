@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import {
-  Plus, Search, Pencil, Trash2, PackagePlus, RotateCcw, PackageX,
+  Plus, Search, Pencil, Trash2, PackagePlus, PackageX,
   Layers, Tag,
 } from 'lucide-react';
 import { PageHeader, Card } from '@/components/Page';
@@ -239,9 +239,8 @@ export function InventoryPage() {
       if (/sales history/i.test(message)) {
         // Old bills still refer to it, so it cannot be erased. Take it off the list instead.
         try {
-          const saved = await archiveProduct(target.id, true);
-          if (filters.includeArchived) upsertProduct(saved);
-          else removeProduct(target.id);
+          await archiveProduct(target.id, true);
+          removeProduct(target.id);
           toastSuccess(`${target.name} has been sold before, so it can't be erased. It is now hidden from the list.`);
         } catch (e2) {
           toastError(e2 instanceof Error ? e2.message : 'Could not hide product');
@@ -258,20 +257,6 @@ export function InventoryPage() {
   const actionsFor = (p: Product): ReactNode => (
     <div className="flex items-center gap-0.5 shrink-0">
       <IconBtn title="Edit" onClick={() => openEdit(p)}><Pencil size={15} /></IconBtn>
-      {p.archived && (
-        <IconBtn
-          title="Show in the list again"
-          onClick={async () => {
-            try {
-              upsertProduct(await archiveProduct(p.id, false));
-            } catch (e) {
-              toastError(e instanceof Error ? e.message : 'Could not restore product');
-            }
-          }}
-        >
-          <RotateCcw size={15} />
-        </IconBtn>
-      )}
       <IconBtn title="Delete" danger onClick={() => setDeleting(p)}><Trash2 size={15} /></IconBtn>
     </div>
   );
@@ -295,7 +280,7 @@ export function InventoryPage() {
       />
 
       <Card className="mb-4">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
           <div className="relative">
             <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <TextInput
@@ -310,15 +295,6 @@ export function InventoryPage() {
             <option value="low">Low stock</option>
             <option value="out">Out of stock</option>
           </Select>
-          <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer w-fit">
-            <input
-              type="checkbox"
-              checked={filters.includeArchived}
-              onChange={(e) => setFilters((f) => ({ ...f, includeArchived: e.target.checked }))}
-              className="rounded border-gray-300 text-brand-700 focus:ring-brand-600"
-            />
-            Show archived products
-          </label>
         </div>
       </Card>
 

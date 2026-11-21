@@ -27,9 +27,10 @@ export function Modal({ open, onClose, title, children, wide }: ModalProps) {
       <div
         className={`relative bg-white w-full ${
           wide ? 'sm:max-w-3xl' : 'sm:max-w-lg'
-        } rounded-t-2xl sm:rounded-2xl shadow-xl max-h-[92vh] sm:max-h-[88vh] flex flex-col`}
+        } rounded-t-2xl sm:rounded-2xl shadow-xl max-h-[92dvh] sm:max-h-[88vh] flex flex-col`}
       >
-        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200 shrink-0">
+        <div className="sm:hidden pt-2 flex justify-center shrink-0"><span className="h-1.5 w-10 rounded-full bg-gray-300" /></div>
+        <div className="flex items-center justify-between px-5 py-3 sm:py-4 border-b border-gray-200 shrink-0">
           <h2 className="text-base font-semibold text-gray-900">{title}</h2>
           <button
             onClick={onClose}
@@ -39,7 +40,7 @@ export function Modal({ open, onClose, title, children, wide }: ModalProps) {
             <X size={18} />
           </button>
         </div>
-        <div className="overflow-y-auto px-5 py-4">{children}</div>
+        <div className="overflow-y-auto overscroll-contain px-5 pt-4 pb-[calc(1.25rem+env(safe-area-inset-bottom))]">{children}</div>
       </div>
     </div>
   );

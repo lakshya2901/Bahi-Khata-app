@@ -319,8 +319,8 @@ export function PosPage() {
                       <QtyBtn onClick={() => setQty(l, l.quantity + 1)}><Plus size={14} /></QtyBtn>
                     </div>
 
-                    <div className="flex flex-col items-end gap-1">
-                      <div className="flex items-end gap-3 text-[11px] text-gray-500">
+                    <div className="flex flex-col items-end gap-1 w-full sm:w-auto">
+                      <div className="flex items-end gap-3 text-[11px] text-gray-500 w-full sm:w-auto justify-between sm:justify-end">
                         {mrp !== null && (
                           <>
                             <div className="text-right">
@@ -481,13 +481,35 @@ export function PosPage() {
               <button
                 onClick={submitBill}
                 disabled={submitting}
-                className="w-full py-3.5 rounded-lg bg-brand-700 hover:bg-brand-800 text-white font-semibold text-sm transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full py-3.5 rounded-lg bg-brand-700 hover:bg-brand-800 text-white font-semibold text-sm transition-colors disabled:opacity-50 hidden lg:flex items-center justify-center gap-2"
               >
                 <ReceiptText size={16} />
                 {submitting ? 'Saving…' : `Generate Bill · ${formatMoney(total)}`}
               </button>
             </div>
           </div>
+        )}
+
+        {cart.length > 0 && (
+          <>
+            <div className="h-24 lg:hidden" />
+            <div className="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-white border-t-2 border-gold-300 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-4px_14px_rgba(13,43,75,0.08)]">
+              <div className="flex items-center justify-between gap-4 max-w-lg mx-auto">
+                <div className="min-w-0">
+                  <div className="text-[11px] text-gray-500">Total · {cartCount} item{cartCount === 1 ? '' : 's'}</div>
+                  <div className="text-xl font-bold text-brand-800 tabular-nums leading-tight">{formatMoney(total)}</div>
+                </div>
+                <button
+                  onClick={submitBill}
+                  disabled={submitting}
+                  className="flex-1 max-w-[15rem] py-3.5 rounded-xl bg-brand-700 active:bg-brand-800 text-white font-semibold text-sm disabled:opacity-50 flex items-center justify-center gap-2 shadow"
+                >
+                  <ReceiptText size={16} />
+                  {submitting ? 'Saving…' : 'Generate Bill'}
+                </button>
+              </div>
+            </div>
+          </>
         )}
 
         {receipt && <ReceiptModal sale={receipt} store={settings} onClose={newBill} />}
@@ -565,7 +587,7 @@ export function PosPage() {
 
       {/* Always one tap away once something is added */}
       {cartCount > 0 && (
-        <div className="sticky bottom-4 mt-6 z-20">
+        <div className="sticky bottom-[5.25rem] lg:bottom-4 mt-6 z-20">
           <button
             onClick={openCart}
             className="w-full flex items-center justify-between gap-3 px-5 py-4 rounded-xl bg-brand-700 hover:bg-brand-800 text-white shadow-lg transition-colors"
@@ -631,8 +653,8 @@ function ShopGroup({ items, view, title, subtitle, qtyOf, onAdd, onRemove }: {
     return (
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm divide-y divide-gray-100 overflow-hidden">
         {items.map((p) => (
-          <div key={p.id} className={`flex items-center justify-between gap-3 px-4 py-3 ${p.stock === 0 ? 'opacity-60' : ''}`}>
-            <div className="min-w-0 flex-1">
+          <div key={p.id} className={`flex flex-wrap items-center justify-between gap-x-3 gap-y-2 px-4 py-3 ${p.stock === 0 ? 'opacity-60' : ''}`}>
+            <div className="min-w-0 flex-1 basis-40">
               <div className="text-sm font-medium text-gray-900 truncate">{title(p)}</div>
               {subtitle(p) && <div className="text-xs text-gray-500 truncate">{subtitle(p)}</div>}
             </div>
@@ -640,7 +662,7 @@ function ShopGroup({ items, view, title, subtitle, qtyOf, onAdd, onRemove }: {
               <div className="text-sm font-semibold text-gray-900 tabular-nums">{formatMoney(p.selling_price)}</div>
               {left(p)}
             </div>
-            <div className="shrink-0 w-[8.5rem] flex justify-end">{control(p)}</div>
+            <div className="shrink-0 min-w-[8.5rem] flex justify-end">{control(p)}</div>
           </div>
         ))}
       </div>

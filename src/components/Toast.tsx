@@ -54,13 +54,13 @@ export function ToastContainer() {
   }, [onUpdate]);
 
   return (
-    <div className="fixed bottom-4 right-4 z-[100] flex flex-col gap-2 max-w-[calc(100vw-2rem)]">
+    <div className="fixed bottom-24 left-4 right-4 lg:bottom-4 lg:left-auto z-[100] flex flex-col items-stretch lg:items-end gap-2 pointer-events-none">
       {items.map((t) => {
         const Icon = icons[t.kind];
         return (
           <div
             key={t.id}
-            className={`${colors[t.kind]} shadow-lg rounded-lg px-4 py-3 flex items-center gap-2 text-sm font-medium animate-[toastIn_0.2s_ease-out]`}
+            className={`${colors[t.kind]} pointer-events-auto shadow-lg rounded-xl px-4 py-3 flex items-center gap-2 text-sm font-medium animate-[toastIn_0.2s_ease-out]`}
           >
             <Icon size={16} className="shrink-0" />
             <span>{t.message}</span>
