@@ -121,7 +121,8 @@ try {
   await client.query('COMMIT');
   console.log(`done: ${ins.name.length} created, ${upd.id.length} updated, ${archived} sample products archived`);
 } catch (e) {
-  await client.query('ROLLBACK');
+  // If the connection itself died, ROLLBACK fails too; do not let that hide the real error.
+  await client.query('ROLLBACK').catch((r) => console.error('rollback also failed:', r.message));
   throw e;
 } finally {
   await client.end();

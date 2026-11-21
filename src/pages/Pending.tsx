@@ -76,14 +76,16 @@ export function PendingPage() {
     try {
       if (target.kind === 'bill') await recordBillPayment(target.sale.id, value);
       else await recordCustomerPayment(target.group.customerId as string, value);
-      toastSuccess(`${formatMoney(value)} received`);
-      setTarget(null);
-      await load();
     } catch (e) {
       toastError(e instanceof Error ? e.message : 'Could not save payment');
-    } finally {
       setSaving(false);
+      return;
     }
+    // The payment is saved from here on, so a failure to refresh the list must not look like a failed payment.
+    toastSuccess(`${formatMoney(value)} received`);
+    setTarget(null);
+    setSaving(false);
+    await load();
   };
 
   const targetName = target?.kind === 'bill' ? target.sale.bill_number : target?.group.name;

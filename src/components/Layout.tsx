@@ -94,7 +94,7 @@ export function Layout({ page, onNavigate, storeName, storeSubtitle, children }:
       <aside className="hidden lg:flex fixed inset-y-0 left-0 w-64 bg-white border-r border-gold-200 flex-col px-4 py-5 gap-5 z-30">
         {desktopBrand}
         {navList}
-        <div className="mt-auto text-[11px] text-gray-400 px-3">General Store Management</div>
+        <div className="mt-auto text-[11px] text-gray-400 px-3">Made by Lakshya Babel</div>
       </aside>
 
       {/* Mobile top bar */}
@@ -114,6 +114,7 @@ export function Layout({ page, onNavigate, storeName, storeSubtitle, children }:
               </button>
             </div>
             {navList}
+            <div className="mt-auto text-[11px] text-gray-400 px-3">Made by Lakshya Babel</div>
           </div>
         </div>
       )}

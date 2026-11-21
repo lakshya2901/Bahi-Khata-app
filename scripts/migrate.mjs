@@ -13,11 +13,16 @@ if (/ep-dummy|user:password@/.test(url)) {
 const files = ['db/schema.sql', ...(process.argv.includes('--seed') ? ['db/seed.sql'] : [])];
 const client = new pg.Client({ connectionString: url });
 await client.connect();
+let current = '';
 try {
   for (const f of files) {
+    current = f;
     await client.query(await readFile(new URL(`../${f}`, import.meta.url), 'utf8'));
     console.log(`applied ${f}`);
   }
+} catch (e) {
+  console.error(`FAILED while applying ${current}: ${e.message}`);
+  process.exitCode = 1;
 } finally {
   await client.end();
 }

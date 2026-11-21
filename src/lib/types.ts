@@ -27,8 +27,6 @@ export interface Product {
   low_stock_threshold: number;
   expiry_date: string | null;
   archived: boolean;
-  created_at: string;
-  updated_at: string;
   brands?: { name: string } | null;
   categories?: { name: string } | null;
 }
@@ -89,13 +87,14 @@ export interface StockMovement {
   resulting_stock: number;
   note: string;
   bill_id: string | null;
+  unit_cost: number | null;
+  cost_after: number | null;
   created_at: string;
   products?: { name: string; sku: string; unit: string } | null;
 }
 
 export interface Settings {
   id: number;
-  row_version?: never;
   store_name: string;
   store_subtitle: string;
   store_phone: string;

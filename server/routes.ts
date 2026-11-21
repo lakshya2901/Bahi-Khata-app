@@ -1,6 +1,6 @@
 import { timingSafeEqual } from 'node:crypto';
-import { query, ConfigError } from './db';
-import { MailError, emailConfigured, invalidateSchedule, runScheduledEmail, sendReport } from './mailer';
+import { query, ConfigError } from './db.js';
+import { MailError, emailConfigured, invalidateSchedule, runScheduledEmail, sendReport } from './mailer.js';
 
 export interface ApiRequest {
   method: string;
@@ -35,6 +35,17 @@ const int = (v: unknown, label: string, min = 0) => {
   return n;
 };
 const uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const isoDate = (v: unknown, label: string) => {
+  if (typeof v !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(v)) throw new HttpError(400, `${label} must be a date like 2026-01-31`);
+  return v;
+};
+const PAYMENT_METHODS = ['cash', 'upi', 'card', 'credit'];
+const SALE_STATUSES = ['completed', 'cancelled'];
+const paymentMethod = (v: unknown) => {
+  const pm = typeof v === 'string' && v.trim() ? v.trim() : 'cash';
+  if (!PAYMENT_METHODS.includes(pm)) throw new HttpError(400, 'Unknown payment method');
+  return pm;
+};
 const uuid = (v: unknown, label = 'id') => {
   if (typeof v !== 'string' || !uuidRe.test(v)) throw new HttpError(400, `Invalid ${label}`);
   return v;
@@ -59,6 +70,7 @@ const WITH_NAMES = `
     FROM p`;
 
 // cost = what the goods cost the shop; profit = what the customer was charged for the bill (after discount) minus cost.
+// Profit is also computed for cancelled bills here; the dashboard and customer totals filter on status = 'completed'.
 const SALE_SELECT = `
   SELECT s.*,
          s.total - s.amount_paid AS amount_due,
@@ -96,14 +108,14 @@ function friendly(e: any): HttpError {
     return new HttpError(409, 'That name already exists');
   }
   if (code === '23503' || code === '23001') {
-    return new HttpError(409, 'This item is in use and cannot be deleted');
+    return new HttpError(409, 'This item is linked to other records, so the change was not allowed');
   }
   if (code === '23514') return new HttpError(400, 'A value is out of the allowed range');
   if (code === 'P0001') return new HttpError(400, e.message); // RAISE EXCEPTION from our functions
-  if (/fetch|ENOTFOUND|ECONNREFUSED|ECONNRESET|ETIMEDOUT|getaddrinfo|certificate|SSL/i.test(`${e?.message} ${e?.cause?.message ?? ''} ${e?.cause?.code ?? ''}`)) {
-    const why = [e?.cause?.code, e?.cause?.message, e?.message].filter(Boolean)[0];
+  if (/fetch failed|ENOTFOUND|ECONNREFUSED|ECONNRESET|ETIMEDOUT|getaddrinfo|certificate|SSL/i.test(`${e?.message} ${e?.cause?.message ?? ''} ${e?.cause?.code ?? ''}`)) {
+    // The details (host names, causes) go to the server log only, not to whoever made the request.
     console.error('[db] connection problem:', e);
-    return new HttpError(503, `Cannot reach the database (${why}). Check DATABASE_URL in .env, your internet/VPN/proxy, and that Node is v18 or newer.`);
+    return new HttpError(503, 'Cannot reach the database right now. Check your internet connection and DATABASE_URL in .env, then try again.');
   }
   console.error(e);
   return new HttpError(500, 'Something went wrong on the server');
@@ -123,6 +135,7 @@ function productValues(b: any, partial: boolean) {
   if (has('brand_id')) set('brand_id', b.brand_id ? uuid(b.brand_id, 'brand') : null);
   if (has('category_id')) set('category_id', b.category_id ? uuid(b.category_id, 'category') : null);
   if (has('size')) set('size', str(b.size));
+  // A blank SKU means "generate one" when adding, and "keep the current one" when editing.
   if ('sku' in b && str(b.sku)) set('sku', str(b.sku));
   if ('mrp' in b) set('mrp', b.mrp === '' || b.mrp === null ? null : num(b.mrp, 'MRP'));
   if (has('purchase_price')) set('purchase_price', num(b.purchase_price ?? 0, 'Purchase price'));
@@ -135,13 +148,19 @@ function productValues(b: any, partial: boolean) {
     if (d && !/^\d{4}-\d{2}-\d{2}$/.test(d)) throw new HttpError(400, 'Invalid expiry date');
     set('expiry_date', d || null);
   }
-  if ('archived' in b) set('archived', Boolean(b.archived));
+  if ('archived' in b) {
+    if (typeof b.archived !== 'boolean') throw new HttpError(400, 'archived must be true or false');
+    set('archived', b.archived);
+  }
   return { cols, vals };
 }
 
 async function route(r: ApiRequest): Promise<ApiResponse> {
   const [res, id, sub] = r.path;
   const m = r.method;
+  if (r.body !== undefined && r.body !== null && (typeof r.body !== 'object' || Array.isArray(r.body))) {
+    throw new HttpError(400, 'The request body must be a JSON object');
+  }
   const b = r.body ?? {};
 
   // ----- settings -----
@@ -281,8 +300,13 @@ async function route(r: ApiRequest): Promise<ApiResponse> {
       if (used.length) {
         throw new HttpError(409, 'This product has sales history, so it cannot be deleted. Archive it instead.');
       }
-      await query('DELETE FROM stock_movements WHERE product_id = $1', [id]);
-      await query('DELETE FROM products WHERE id = $1', [id]);
+      // One statement, so the stock history can never be removed without the product (or the other way round),
+      // even if a sale is made for this product at the same moment.
+      await query(
+        `WITH gone AS (DELETE FROM products p WHERE p.id = $1 AND NOT EXISTS (SELECT 1 FROM sale_items WHERE product_id = p.id) RETURNING p.id)
+         DELETE FROM stock_movements WHERE product_id IN (SELECT id FROM gone)`,
+        [uuid(id)]
+      );
       return ok({ ok: true });
     }
   }
@@ -324,7 +348,9 @@ async function route(r: ApiRequest): Promise<ApiResponse> {
       return ok((await query(`${CUSTOMER_SELECT} WHERE c.id = $1`, [id]))[0]);
     }
     if (id && !sub && m === 'DELETE') {
-      await query('DELETE FROM customers WHERE id = $1', [uuid(id)]);
+      const owed = await query("SELECT 1 FROM sales WHERE customer_id = $1 AND status = 'completed' AND amount_paid < total LIMIT 1", [uuid(id)]);
+      if (owed.length) throw new HttpError(409, 'This customer still has unpaid bills. Record their payment before deleting them.');
+      await query('DELETE FROM customers WHERE id = $1', [id]);
       return ok({ ok: true });
     }
   }
@@ -339,11 +365,17 @@ async function route(r: ApiRequest): Promise<ApiResponse> {
         params.push(`%${q.search.trim()}%`);
         where.push(`(s.bill_number ILIKE $${params.length} OR s.customer_name ILIKE $${params.length} OR s.customer_phone ILIKE $${params.length})`);
       }
-      if (q.payment) { params.push(q.payment); where.push(`s.payment_method = $${params.length}`); }
-      if (q.status) { params.push(q.status); where.push(`s.status = $${params.length}`); }
+      if (q.payment) {
+        if (!PAYMENT_METHODS.includes(q.payment)) throw new HttpError(400, 'Unknown payment method');
+        params.push(q.payment); where.push(`s.payment_method = $${params.length}`);
+      }
+      if (q.status) {
+        if (!SALE_STATUSES.includes(q.status)) throw new HttpError(400, 'Unknown bill status');
+        params.push(q.status); where.push(`s.status = $${params.length}`);
+      }
       if (q.due === 'true') where.push(`s.status = 'completed' AND s.amount_paid < s.total`);
-      if (q.from) { params.push(q.from); where.push(`s.created_at >= $${params.length}::date`); }
-      if (q.to) { params.push(q.to); where.push(`s.created_at < ($${params.length}::date + 1)`); }
+      if (q.from) { params.push(isoDate(q.from, 'From date')); where.push(`s.created_at >= $${params.length}::date`); }
+      if (q.to) { params.push(isoDate(q.to, 'To date')); where.push(`s.created_at < ($${params.length}::date + 1)`); }
       const limit = Math.min(Math.max(parseInt(q.limit ?? '500', 10) || 500, 1), 2000);
       return ok(await query(
         `${SALE_SELECT} ${where.length ? 'WHERE ' + where.join(' AND ') : ''} ORDER BY s.created_at DESC LIMIT ${limit}`,
@@ -366,7 +398,7 @@ async function route(r: ApiRequest): Promise<ApiResponse> {
           b.customer_id ? uuid(b.customer_id, 'customer') : null,
           str(b.customer_name), str(b.customer_phone),
           num(b.discount ?? 0, 'Discount'),
-          str(b.payment_method) || 'cash',
+          paymentMethod(b.payment_method),
           str(b.notes),
           str(b.idempotency_key) || null,
           b.amount_paid === undefined || b.amount_paid === '' ? null : num(b.amount_paid, 'Amount paid'),
@@ -490,19 +522,24 @@ async function route(r: ApiRequest): Promise<ApiResponse> {
 
   // ----- daily email -----
   if (res === 'email' && id === 'test' && m === 'POST') {
-    const to = str(b.to);
-    if (to && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) throw new HttpError(400, 'That email address does not look right');
-    return ok(await sendReport({ to: to || undefined }));
+    // Always goes to the address saved in Settings, never to one supplied with the request.
+    return ok(await sendReport());
   }
   if (res === 'cron' && id === 'daily-email') {
-    // Called by a timer outside the app (the dev server has its own). Must carry the shared secret.
+    // Called by a timer outside the app (the dev server has its own).
+    // It must send the shared secret as the header "Authorization: Bearer <CRON_SECRET>" (never in the URL, which gets logged).
     const secret = process.env.CRON_SECRET;
-    if (!secret) throw new HttpError(403, 'CRON_SECRET is not set');
+    if (!secret) {
+      console.error('[cron] CRON_SECRET is not set; refusing the request.');
+      throw new HttpError(503, 'Not available');
+    }
     const header = String(r.headers?.authorization ?? '').replace(/^Bearer\s+/i, '');
-    const given = Buffer.from(header || r.query.key || '');
+    const given = Buffer.from(header);
     const want = Buffer.from(secret);
     if (given.length !== want.length || !timingSafeEqual(given, want)) throw new HttpError(401, 'Wrong key');
-    return ok(await runScheduledEmail());
+    const result = await runScheduledEmail();
+    // A real failure gets an error status so the outside timer can alert; "nothing to do right now" stays a success.
+    return result.failed ? { status: 500, json: result } : ok(result);
   }
 
   if (res === 'health') {

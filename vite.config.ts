@@ -28,22 +28,31 @@ function apiDevServer(): Plugin {
         const chunks: Buffer[] = [];
         for await (const c of req) chunks.push(c as Buffer);
         const raw = Buffer.concat(chunks).toString();
+        const send = (status: number, json: unknown) => {
+          res.statusCode = status;
+          res.setHeader('Content-Type', 'application/json');
+          res.setHeader('Cache-Control', 'no-store');
+          res.end(JSON.stringify(json));
+        };
         let body: unknown = undefined;
-        try { body = raw ? JSON.parse(raw) : undefined; } catch { /* handled as empty body */ }
+        try { body = raw ? JSON.parse(raw) : undefined; } catch { return send(400, { error: 'The request body is not valid JSON' }); }
 
-        const url = new URL(req.url ?? '/', 'http://localhost');
-        const { handle } = await server.ssrLoadModule('/server/routes.ts');
-        const out = await handle({
-          method: req.method ?? 'GET',
-          path: url.pathname.split('/').filter(Boolean),
-          query: Object.fromEntries(url.searchParams),
-          body,
-          headers: req.headers,
-        });
-        res.statusCode = out.status;
-        res.setHeader('Content-Type', 'application/json');
-        res.setHeader('Cache-Control', 'no-store');
-        res.end(JSON.stringify(out.json));
+        try {
+          const url = new URL(req.url ?? '/', 'http://localhost');
+          const { handle } = await server.ssrLoadModule('/server/routes.ts');
+          const out = await handle({
+            method: req.method ?? 'GET',
+            path: url.pathname.split('/').filter(Boolean),
+            query: Object.fromEntries(url.searchParams),
+            body,
+            headers: req.headers,
+          });
+          send(out.status, out.json);
+        } catch (e) {
+          // e.g. a syntax error in a server file while editing: say so instead of leaving the request hanging.
+          console.error('[api] failed to run the handler:', e);
+          send(500, { error: 'The server code could not be loaded. Check the terminal for the error.' });
+        }
       });
     },
   };

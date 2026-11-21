@@ -1,5 +1,5 @@
 // Vercel serverless entry: every /api/* request lands here.
-import { handle } from '../server/routes';
+import { handle } from '../server/routes.js';
 
 export default async function handler(req: any, res: any) {
   const url = new URL(req.url, 'http://localhost');

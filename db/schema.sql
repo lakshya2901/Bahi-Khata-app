@@ -1,4 +1,5 @@
--- Mahaveer Agencies — plain PostgreSQL schema (Neon compatible). Safe to re-run.
+-- Mahaveer Agencies — plain PostgreSQL schema (Neon compatible). Safe to re-run: every statement is applied again
+-- on each run, including the one-time backfills and the DROPs of old function versions further down.
 
 
 CREATE TABLE IF NOT EXISTS settings (
@@ -249,7 +250,8 @@ BEGIN
     INTO v_subtotal
     FROM jsonb_array_elements(p_items) e JOIN products p ON p.id = (e->>'product_id')::uuid;
 
-  p_discount := least(greatest(coalesce(p_discount, 0), 0), v_subtotal);
+  -- Rounded to paise so that subtotal - discount always equals the stored total (a 10% discount can be 33.3333).
+  p_discount := round(least(greatest(coalesce(p_discount, 0), 0), v_subtotal), 2);
   v_total := v_subtotal - p_discount;
   v_paid := CASE WHEN p_payment_method = 'credit'
                  THEN least(greatest(coalesce(p_amount_paid, 0), 0), v_total)
@@ -374,7 +376,7 @@ BEGIN
   SELECT stock, purchase_price INTO v_old FROM products WHERE id = p_product_id FOR UPDATE;
   IF NOT FOUND THEN RAISE EXCEPTION 'Product not found'; END IF;
   IF v_old.stock + p_change < 0 THEN
-    RAISE EXCEPTION 'Adjustment would make stock negative (or product not found)';
+    RAISE EXCEPTION 'Adjustment would make stock negative';
   END IF;
 
   v_new_cost := v_old.purchase_price;
@@ -470,7 +472,8 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- ---------- clear the whole sales log ----------
--- Returns how many bills were removed. Bill numbers start again from INV-000001.
+-- Returns how many bills were removed. Bill numbers start again from INV-000001, so a new bill can reuse the
+-- number printed on an old invoice. The idempotency keys are removed together with the bills.
 CREATE OR REPLACE FUNCTION clear_sales(p_restore_stock boolean DEFAULT true) RETURNS integer AS $$
 DECLARE
   v_count integer;

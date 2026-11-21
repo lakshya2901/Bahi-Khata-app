@@ -20,7 +20,9 @@ async function http<T>(method: string, path: string, body?: unknown, params?: Re
     throw new Error('Cannot reach the server. Check your connection.');
   }
   const data = await res.json().catch(() => null);
-  if (!res.ok) throw new Error(data?.error ?? 'Something went wrong');
+  if (!res.ok) throw new Error(data?.error ?? `Something went wrong (error ${res.status})`);
+  // A successful reply that is not JSON (e.g. a proxy page) would otherwise crash later as "cannot read properties of null".
+  if (data === null) throw new Error('The server sent an unexpected reply. Please try again.');
   return data as T;
 }
 
@@ -36,6 +38,7 @@ const PERSIST = new Set(['products', 'settings', 'categories', 'brands', 'dashbo
 
 // Screens showing the same data are kept in step: when one saves a change, the others update too.
 const watchers = new Map<string, Set<(value: unknown) => void>>();
+// Bump the "-v1" whenever the shape of a cached item changes, so old saved copies are not read back as the new shape.
 const STORE_KEY = 'mahaveer-cache-v1';
 try {
   const saved = JSON.parse(localStorage.getItem(STORE_KEY) ?? '{}') as Record<string, unknown>;

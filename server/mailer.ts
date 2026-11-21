@@ -1,5 +1,5 @@
 import nodemailer, { type Transporter } from 'nodemailer';
-import { query } from './db';
+import { query } from './db.js';
 
 // Daily stock / pending-payment email.
 // The sending Gmail account comes from .env (GMAIL_USER + GMAIL_APP_PASSWORD); who receives it, whether it is
@@ -165,7 +165,8 @@ export async function sendReport(opts: { to?: string } = {}) {
     if (e?.code === 'EAUTH' || /Invalid login|Username and Password not accepted/i.test(e?.message ?? '')) {
       throw new MailError('Gmail rejected the login. Use a Google "App Password" for GMAIL_APP_PASSWORD (not the normal password), with 2-Step Verification turned on.');
     }
-    throw new MailError(`Could not send the email: ${e?.message ?? 'unknown error'}`);
+    console.error('[email] send failed:', e);
+    throw new MailError(`Could not send the email: ${e?.message ?? 'unknown error'}`, { cause: e });
   }
   return { sent_to: to, subject: mail.subject };
 }
@@ -178,10 +179,9 @@ function localNow(tz: string, now: Date) {
   return { date: `${get('year')}-${get('month')}-${get('day')}`, minutes: Number(get('hour')) * 60 + Number(get('minute')) };
 }
 
-/**
- * Called every minute (by the dev server) or every few minutes (by an outside timer hitting the cron address).
- * Sends at most one email a day, once the chosen time has passed, and only while the toggle is on.
- */
+// In-memory copy of the email settings so the timer doesn't hit the database on every tick. It is best-effort and
+// per server instance (on serverless every cold instance starts empty); correctness comes from the database
+// claim in runScheduledEmail, not from this cache.
 interface Schedule {
   enabled: boolean; to: string; time: string; tz: string; lastSent: string | null;
   loadedOn: string;  // the local date this was read, so a new day always re-reads it
@@ -211,7 +211,7 @@ async function loadSchedule(now: Date): Promise<Schedule> {
  * The timer must not keep the database awake all day, so the schedule is remembered in memory and the database is
  * only asked when something could actually be due: the first run, a new day, or once the send time has arrived.
  */
-export async function runScheduledEmail(now = new Date()): Promise<{ sent: boolean; reason?: string }> {
+export async function runScheduledEmail(now = new Date()): Promise<{ sent: boolean; failed?: boolean; reason?: string }> {
   let s = schedule;
   if (s) {
     const { date, minutes } = localNow(s.tz, now);
@@ -243,14 +243,25 @@ export async function runScheduledEmail(now = new Date()): Promise<{ sent: boole
   );
   if (!claimed.length) return { sent: false, reason: 'another run is handling it' };
 
+  // Sending and recording the result are separate steps: once the email has gone out, a database hiccup while
+  // noting it down must never be reported as "could not send" (the retry would then email the report twice).
   try {
     await sendReport();
-    await query("UPDATE settings SET email_last_sent = $1::date, email_last_error = '' WHERE id = 1", [date]);
-    if (schedule) schedule.lastSent = date;
-    return { sent: true };
   } catch (e) {
+    console.error('[email] daily report failed:', e);
     const message = e instanceof Error ? e.message : 'Could not send';
-    await query('UPDATE settings SET email_last_error = $1 WHERE id = 1', [message]);
-    return { sent: false, reason: message };
+    try {
+      await query('UPDATE settings SET email_last_error = $1 WHERE id = 1', [message]);
+    } catch (e2) {
+      console.error('[email] could not record the failure:', e2);
+    }
+    return { sent: false, failed: true, reason: message };
   }
+  try {
+    await query("UPDATE settings SET email_last_sent = $1::date, email_last_error = '' WHERE id = 1", [date]);
+  } catch (e) {
+    console.error('[email] report sent, but could not record it as sent (it may be sent again):', e);
+  }
+  if (schedule) schedule.lastSent = date;
+  return { sent: true };
 }

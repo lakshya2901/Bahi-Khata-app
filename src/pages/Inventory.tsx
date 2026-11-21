@@ -50,7 +50,7 @@ export function InventoryPage() {
   const [filters, setFilters] = useState<ProductFilters>({
     search: '', categoryId: '', brandId: '', stockFilter: 'all', includeArchived: false,
   });
-  const { products, loading, patchProduct, upsertProduct, removeProduct } = useProducts(filters);
+  const { products, loading, reload, patchProduct, upsertProduct, removeProduct } = useProducts(filters);
   const { categories } = useCategories();
   const { brands } = useBrands();
 
@@ -142,6 +142,9 @@ export function InventoryPage() {
       setFormOpen(false);
     } catch (e) {
       toastError(e instanceof Error ? e.message : 'Could not save product');
+      // The details and the stock change are saved by two separate calls, so one may have gone through
+      // while the other failed. Re-read the list so the screen shows what was really saved.
+      void reload();
     } finally {
       setSaving(false);
     }
