@@ -92,7 +92,11 @@ export function SettingsPage({ settings }: { settings: Settings | null }) {
   const sendTest = async () => {
     setTesting(true);
     try {
-      const r = await sendTestEmail(form.email_to.trim() || undefined);
+      // The server only sends to the saved address, so save what is typed first.
+      const typed = form.email_to.trim();
+      if (!typed) throw new Error('Enter the email address to send the report to');
+      if (typed !== (settings?.email_to ?? '')) await updateSettings({ email_to: typed });
+      const r = await sendTestEmail();
       toastSuccess(`Test email sent to ${r.sent_to} — check the inbox (and the spam folder)`);
     } catch (e) {
       toastError(e instanceof Error ? e.message : 'Could not send the test email');

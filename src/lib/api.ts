@@ -141,7 +141,8 @@ export async function updateSettings(patch: Partial<Settings>) {
 }
 
 /** Sends today's stock / pending-payment report right now. `to` overrides the saved address. */
-export const sendTestEmail = (to?: string) => http<{ sent_to: string; subject: string }>('POST', 'email/test', { to });
+/** Sends today's report to the address saved in Settings. */
+export const sendTestEmail = () => http<{ sent_to: string; subject: string }>('POST', 'email/test');
 
 // ---------- categories & brands ----------
 export function useCategories() {
